@@ -1,0 +1,21 @@
+{
+  "name": "matcha",
+  "version": "1.0.0",
+  "description": "dating app",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.0",
+    "mongodb": "^3.5.0",
+    "nodemailer": "^6.4.2",
+    "nodemon": "^2.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "nmashimb",
+  "license": "ISC"
+}
