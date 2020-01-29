@@ -5,6 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.4",
@@ -13,8 +14,10 @@
     "express-ejs-layouts": "^2.5.0",
     "express-session": "^1.17.0",
     "mongodb": "^3.5.0",
+    "mongodb-promise": "0.0.4",
     "nodemailer": "^6.4.2",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "promise": "^8.0.3"
   },
   "devDependencies": {},
   "scripts": {

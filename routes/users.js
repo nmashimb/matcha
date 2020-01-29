@@ -9,6 +9,7 @@ var url = "mongodb://localhost:27017/";
 var nodemailer = require('nodemailer');
 var sessions = require('express-session');
 var session;
+var func = require("../config/functions");
 
 /*things left: sending email, redirect sys when user exists(synchro), validate username, name, lastname and password*/ 
 
@@ -85,26 +86,20 @@ router.post('/register', urlencodedParsor, (req, res) => {
     });
     }*/
         ////////VALIDATION  PASSED
-    MongoClient.connect(url, {useUnifiedTopology: true}, function(err, db) {
-        if (err) throw err;
-        var dbo = db.db('matcha');  //checking user by email for now!!!!!!
-        dbo.collection("users").findOne({email: email}, function(err, user) {
-            if (err) throw err;
-            if (user){
-                console.log('user exists');
-                db.close();
-                res.redirect('/users/register?registration=userexists');//FIND A WAY TO END OR REDIRECT IF USER EXISTS
-                return;
-                }
-        });
-        password = bcrypt.hashSync(password, 10);
-        var token = bcrypt.hashSync(passwordc + Date.now(), 10);
-        dbo.collection("users").insertOne(//change verified value after working on sending email.
-            {username: username, firstname: firstname, lastname: lastname, email: email, password: password, token: token, verified: 1}, 
-            function(err, result) {
-                if (err) throw err
-                console.log("user document inserted");
-                db.close();
+//    console.log(func.userExists(email));
+    func.userExists(email).then((resul) => {
+        if (resul){
+            res.redirect('/users/register?registration=userexists');
+        }
+        else{
+            var token = bcrypt.hashSync(passwordc + Date.now(), 10);
+            password = bcrypt.hashSync(password, 10);
+                    var userInfo = {username: username, firstname: firstname, lastname: lastname, email: email, password: password, token: token, verified: 1};
+                func.userInfo(userInfo);
+                res.redirect('/users/login?login=successful&verificationmail=sent');        
+            }
+    });
+   /* 
                 //////////////////SENDING EMAIL/////////////////////
                 /*var transporter = nodemailer.createTransport({
                     service: 'gmail',
@@ -129,9 +124,9 @@ router.post('/register', urlencodedParsor, (req, res) => {
                     }
                 });*/
                 //////////////////////////////////////////////////
-                res.redirect('/users/login?login=successful&verificationmail=sent');
+   /*             res.redirect('/users/login?login=successful&verificationmail=sent');
         });
-    });
+    });*/
 });
 
 
