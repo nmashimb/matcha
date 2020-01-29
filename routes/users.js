@@ -7,10 +7,10 @@ var expressSession = require('express-session');
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 var nodemailer = require('nodemailer');
-//var cookieParser = require('cookie-parser');
 var sessions = require('express-session');
 var session;
-/*things left: sending email, redirect sys when user exists, validate username, name, lastname and password*/ 
+
+/*things left: sending email, redirect sys when user exists(synchro), validate username, name, lastname and password*/ 
 
 //router.use(cookieParser());
 router.use(sessions({
@@ -22,15 +22,6 @@ router.use(sessions({
         expires: 600000
     }
 }));
-
-/*router.use((req, res, next) =>{
-    if (req.cookies.user_id && !req.session.user) {
-        res.clearCookie('user_id');
-    }
-    next();
-});*/
-
-
 
 //login page
 router.get('/login', (req, res, next) => {
@@ -45,19 +36,23 @@ router.get('/login', (req, res, next) => {
 //register page
 router.get('/register', (req, res) => {
     var session = req.session;
-    if (!session.userid){
+    if (session.userid === undefined){
         res.render('register');
     }
     res.end('You have to log out first!');
 });
 
+router.get('/logout', (req, res) =>{
+    var session = req.session;
+    req.session.destroy();
+    session.id = null;
+    res.redirect('/users/login');
+});
 
 //Register handle(POST): handles data
 router.post('/register', urlencodedParsor, (req, res) => {
     var session = req.session;
-    if (!session.userid){
-        res.render('register');
-    }
+    
     var {username, firstname, lastname, email, password, passwordc} = req.body;
     //let errors = [];
     if (!username || !firstname || !lastname || !email || !password || !passwordc){
@@ -87,7 +82,7 @@ router.post('/register', urlencodedParsor, (req, res) => {
         firstname, 
         lastname, 
         email
-       });
+    });
     }*/
         ////////VALIDATION  PASSED
     MongoClient.connect(url, {useUnifiedTopology: true}, function(err, db) {
@@ -171,13 +166,6 @@ router.post('/login', urlencodedParsor, function(req, res) {
             }
         });
     });
-});
-
-router.get('/logout', (req, res) =>{
-    var session = req.session;
-    req.session.destroy();
-    session.id = null;
-    res.redirect('/users/login');
 });
 
 module.exports = router;
