@@ -3,7 +3,7 @@ const app = express();
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 
-var user;
+/*var user;
 
 module.exports.getUser = function(username, next){
     const result = MongoClient.connect(url, {useUnifiedTopology: true}, function(err, db, next) {
@@ -22,4 +22,4 @@ module.exports.getUser = function(username, next){
     next();
     console.log('3 '+ result);
     return (result);
-};
+};*/

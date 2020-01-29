@@ -27,8 +27,6 @@ app.use(express.static('./public'));
 //fire controller
 //todoController(app);
 
-var userinfor = user.getUser('nik');
-console.log(userinfor+'mmmmmm');
 //Routes
 app.use('/', require('./routes/index'));
 app.use('/loggedin', require('./routes/home'));
