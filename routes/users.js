@@ -10,6 +10,7 @@ var nodemailer = require('nodemailer');
 var sessions = require('express-session');
 var session;
 var func = require("../config/functions");
+var sendmail = require('sendmail')();
 
 /*things left: sending email, redirect sys when user exists(synchro), validate username, name, lastname and password*/ 
 
@@ -50,6 +51,11 @@ router.get('/logout', (req, res) =>{
     res.redirect('/users/login');
 });
 
+router.get('/verify',(req, res) =>{
+    func.verifyaccount(req.query.token);
+    res.redirect('/users/login?verification=successful');  
+});
+
 //Register handle(POST): handles data
 router.post('/register', urlencodedParsor, (req, res) => {
     var session = req.session;
@@ -86,22 +92,21 @@ router.post('/register', urlencodedParsor, (req, res) => {
     });
     }*/
         ////////VALIDATION  PASSED
-//    console.log(func.userExists(email));
-    func.userExists(email).then((resul) => {
+   func.userExists(email).then((resul) => {
         if (resul){
             res.redirect('/users/register?registration=userexists');
         }
         else{
             var token = bcrypt.hashSync(passwordc + Date.now(), 10);
             password = bcrypt.hashSync(password, 10);
-                    var userInfo = {username: username, firstname: firstname, lastname: lastname, email: email, password: password, token: token, verified: 1};
+                    var userInfo = {username: username, firstname: firstname, lastname: lastname, email: email, password: password, token: token, verified: 0};
                 func.userInfo(userInfo);
                 res.redirect('/users/login?login=successful&verificationmail=sent');        
             }
     });
-   /* 
+    /* 
                 //////////////////SENDING EMAIL/////////////////////
-                /*var transporter = nodemailer.createTransport({
+               var transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth: {
                         user: 'matcha@gmail.com',
@@ -122,6 +127,16 @@ router.post('/register', urlencodedParsor, (req, res) => {
                     else {
                         console.log('Email sent: ' + info.response);
                     }
+                }); */
+                ///////other mail
+               /* sendmail({
+                    from: 'register@matcha.com',
+                    to : email,
+                    subject : 'matcha',
+                    html: 'Mail something',
+                }, function(err, reply) {
+                    console.log(err && err.stack);
+                    console.dir(reply);
                 });*/
                 //////////////////////////////////////////////////
    /*             res.redirect('/users/login?login=successful&verificationmail=sent');

@@ -17,7 +17,8 @@
     "mongodb-promise": "0.0.4",
     "nodemailer": "^6.4.2",
     "nodemon": "^2.0.2",
-    "promise": "^8.0.3"
+    "promise": "^8.0.3",
+    "sendmail": "^1.6.1"
   },
   "devDependencies": {},
   "scripts": {
