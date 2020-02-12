@@ -28,6 +28,12 @@ router.get('/myprofile', (req, res) => {
    // }
 });
 
+router.get('/people', (req, res) => {
+    var session = req.session;
+        res.render('people', {user: {username: session.userid}});
+
+});
+
 ///POSTS
 router.post('/myprofile', urlencodedParsor, (req, res) => {
     
