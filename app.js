@@ -24,6 +24,7 @@ app.use(session({
 app.use(flash());
 //static files
 app.use(express.static('./public'));
+app.use(express.static('./public/images'));
 //fire controller
 //todoController(app);
 

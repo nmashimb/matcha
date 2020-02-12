@@ -2,37 +2,91 @@
     <form action="/loggedin/home"><button type= "submit">Back</button></form>
     <form action="/users/logout" method="GET"><button type= "submit">Logout</button></form>
 </div>
-<label><h1>My Profile: <%= user.username %></h1></label>
-<div>
-    <div>DISPLAY PICTURES HERE</div>
 
+<div style="text-align: center">
+    <label><h1>My Profile: <%= user.username %></h1></label>
     <div>
-        <form>
-        <label>Bio:</label><br />
-        <input type="text" name="bio" placeholder="My Bio"/><br />
-        <label>Gender:</label><br />
-        <input type="text" name="gender" placeholder="Gender"/><br />
-        <label>Preference:</label><br />
-        <input type="text" name="sexualpref" placeholder="Sexual Preference"/><br />
-        <button type="submit">Update</button>
-    </form>
+        <img src="../blankprofile.png" style="border-radius: 50%;width:100px;height:100px">
     </div>
-    <div>
-        <label>Settings</label>
-        <form action="" method="POST">   
-            <input type="text" name="cusername" placeholder="Enter Username"><input type="submit" name="subusername">
+    <br />
+        <form action="/loggedin/myprofile" method="POST">
+            <label style="font-weight: bold">Bio:</label><br />
+                <input style="width: 210px;" type="text" name="bio" placeholder="What I want people to know about me..."/><br />
+                <input type="submit" name="subbio" value="Change Bio"/>
+        </form>
+        <form action="/loggedin/myprofile" method="POST">    
+            <label style="font-weight: bold">Gender:</label><br />
+                Male <input type="radio" name="gender" value="male"/>
+                Female <input type="radio" name="gender" value="female"/>
+            <br /><br />
+
+            <label style="font-weight: bold">Preference (Check one or both):</label><br />
+                Females <input type="checkbox" name="females" value="females"/>
+                Males <input type="checkbox" name="males" value="males"/>
+            <br /><br />
+            <input type="submit" name="subgender" />
             <br />
-            <input type="text" name="cfirstname" placeholder="Enter Firstname"><input type="submit" name="subfirstname">
+        </form>
+        <form action="/loggedin/myprofile" method="POST">
+            <label style="font-weight: bold">Interests:</label><br />
+            #Sports <input type="checkbox" name= "interest" value="#sports"/>
+            #Fitness <input type="checkbox" name= "interest" value="#fitness"/>
+            #Books <input type="checkbox" name= "interest" value="#books"/> 
+            #Music <input type="checkbox" name= "interest" value="#music"/> 
+            #Nedflix <input type="checkbox" name= "interest" value="#nedflix"/>
+            #Fashion <input type="checkbox" name= "interest" value="#fashion"/>
             <br />
-            <input type="text" name="clastname" placeholder="Enter Lastname"><input type="submit" name="sublastname">
+            #Family <input type="checkbox" name= "interest" value="#family"/>
+            #Work <input type="checkbox" name= "interest" value="#work"/>
+            #Politics <input type="checkbox" name= "interest" value="#politics"/>
+            #Spirituality <input type="checkbox" name= "interest" value="#spirituality"/>
+            #Religion <input type="checkbox" name= "interest" value="#religion"/>
+            #Travel <input type="checkbox" name= "interest" value="#travel"/>
             <br />
-            <input type="text" name="cemail" placeholder="Enter Email"><input type="submit" name="subemail">
+            #Adventure <input type="checkbox" name= "interest" value="#adventure"/>
+            #Concerts <input type="checkbox" name= "interest" value="#concerts"/>
+            #Photography <input type="checkbox" name= "interest" value="#photography"/>
+            #Programming <input type="checkbox" name= "interest" value="#programming"/>
+            #Animals <input type="checkbox" name= "interest" value="#animals"/>
+            #Sleep <input type="checkbox" name= "interest" value="#sleep"/>
+            <br />
+            #Cooking <input type="checkbox" name= "interest" value="#cooking"/>
+            #Food <input type="checkbox" name= "interest" value="#food"/>
+            #Socialise <input type="checkbox" name= "interest" value="#socialise"/>
+            #Drinks <input type="checkbox" name= "interest" value="#drinks"/>
+            #Smoking <input type="checkbox" name= "interest" value="#smoking"/>
+            #Dance <input type="checkbox" name= "interest" value="#dance"/>
+            <br />
+            #Tattoos <input type="checkbox" name="interest" value= "#tattoos"/>
+            #Pets <input type="checkbox" name="interest" value= "#pets"/>
+            #Laughs <input type="checkbox" name= "interest" value="#laughs"/>
+            #Nerd <input type="checkbox" name="interest" value= "#nerd"/>
+            #Walks <input type="checkbox" name="interest" value= "#walks"/>
+            #Gaming <input type="checkbox" name="interest" value= "#gaming"/>
+            <br /><br />
+            <input type="submit" name= "subinterests" value="Add Interests">
+        </form>
+
+        <label style="font-weight: bold">Settings</label>
+        <br /><br />
+        <form action= "/loggedin/myprofile" method="POST">   
+            <input type="text" name="cusername" placeholder="Update Username"><input type="submit" name="subusername">
+        </form>
+        <form action= "/loggedin/myprofile" method="POST">   
+            <input type="text" name="cfirstname" placeholder="Update Firstname"><input type="submit" name="subfirstname">
+        </form>
+        <form action= "/loggedin/myprofile" method="POST">   
+            <input type="text" name="clastname" placeholder="Update Lastname"><input type="submit" name="sublastname">
+        </form>
+        <form action= "/loggedin/myprofile" method="POST">
+            <input type="email" name="cemail" placeholder="Update Email"><input type="submit" name="subemail">
             <br />
             <br />
-            <input type="password" name="cpass" placeholder="Enter Password"><br />
+        </form>
+        <form action= "/loggedin/myprofile" method="POST">   
+            <input type="password" name="cpass" placeholder="Update Password"><br />
             <input type="password" name="cpassconf" placeholder="Confirm Password">
             <br />
-            <input type="submit" name="subemail">  
+            <input type="submit" name="subpassword">  
         </form>
-    </div>
 </div>
