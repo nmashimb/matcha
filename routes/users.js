@@ -51,6 +51,17 @@ router.get('/logout', (req, res) =>{
     res.redirect('/users/login');
 });
 
+//browsing
+router.get('/people', (req, res) =>{
+    var session = req.session;
+    func.userMatch().then((resul) => {
+        if (resul){
+            res.redirect('/users/people?matches='+resul);
+        }
+    });
+});
+
+//verify
 router.get('/verify',(req, res) =>{
     func.verifyaccount(req.query.token);
     res.redirect('/users/login?verification=successful');  
@@ -104,44 +115,7 @@ router.post('/register', urlencodedParsor, (req, res) => {
                 res.redirect('/users/login?login=successful&verificationmail=sent');        
             }
     });
-    /* 
-                //////////////////SENDING EMAIL/////////////////////
-               var transporter = nodemailer.createTransport({
-                    service: 'gmail',
-                    auth: {
-                        user: 'matcha@gmail.com',
-                        pass: 'yourpassword'
-                    }
-                });  
-                var mailOptions = {
-                    from: 'matcha@gmail.com',
-                    to: email,
-                    subject: 'Verify Your Matcha Account',
-                    text: 'Thank you for creating a Matcha account, click the link to to verify'
-                };
-                
-                transporter.sendMail(mailOptions, function(error, info){
-                    if (error) {
-                        console.log(error);
-                    }
-                    else {
-                        console.log('Email sent: ' + info.response);
-                    }
-                }); */
-                ///////other mail
-               /* sendmail({
-                    from: 'register@matcha.com',
-                    to : email,
-                    subject : 'matcha',
-                    html: 'Mail something',
-                }, function(err, reply) {
-                    console.log(err && err.stack);
-                    console.dir(reply);
-                });*/
-                //////////////////////////////////////////////////
-   /*             res.redirect('/users/login?login=successful&verificationmail=sent');
-        });
-    });*/
+ 
 });
 
 

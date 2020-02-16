@@ -54,3 +54,19 @@ module.exports.userInfo = function (userI){
     });
 
 }
+
+module.exports.userMatch = function () {
+    return new Promise(function(resolve, reject) {
+        MongoClient.connect(url, { useUnifiedTopology: true },function(err, db) {
+            if (err) throw err;
+            var dbo = db.db('matcha');
+            dbo.collection("users").find({}).toArray( function(err, result) {
+                if (err) throw err;
+                console.log("*************************************");
+                console.log(result);
+                console.log("*************************************");
+                resolve(result);
+            });
+        });
+    });
+}
