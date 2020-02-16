@@ -20,6 +20,20 @@ module.exports.verifyaccount = function (token) {
     });
 }
 
+//matching accounts
+module.exports.userMatch = function () {
+    return new Promise(function(resolve, reject) {
+        MongoClient.connect(url, { useUnifiedTopology: true },function(err, db) {
+            if (err) throw err;
+            var dbo = db.db('matcha');
+            dbo.collection("users").find({}).toArray( function(err, result) {
+                if (err) throw err;
+                resolve(result);
+            });
+        });
+    });
+}
+
         //check for user exists
 module.exports.userExists = function (em) {
     return new Promise(function(resolve, reject) {

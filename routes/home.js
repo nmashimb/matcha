@@ -5,6 +5,7 @@ var urlencodedParsor = bodyParser.urlencoded({extended: false });
 var user = require('../config/functions');
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
+var func = require("../config/functions");
 
 ///GETS
 router.get('/home', (req, res) => {
@@ -26,6 +27,15 @@ router.get('/myprofile', (req, res) => {
     else{ */
         res.render('myprofile', {user: {username: session.userid}});
    // }
+});
+
+router.get('/people', (req, res) =>{
+    var session = req.session;
+    func.userMatch().then((resul) => {
+        if (resul){
+            res.render('people', {resul});
+        }
+    });
 });
 
 ///POSTS

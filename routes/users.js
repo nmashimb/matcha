@@ -25,6 +25,16 @@ router.use(sessions({
     }
 }));
 
+//browsing
+router.get('/people', (req, res) =>{
+    var session = req.session;
+    func.userMatch().then((resul) => {
+        if (resul){
+            res.redirect('/users/people?matches='+resul);
+        }
+    });
+});
+
 //login page
 router.get('/login', (req, res, next) => {
     var session = req.session;
