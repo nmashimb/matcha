@@ -1,0 +1,12 @@
+<DIV>
+    <FORM action="/loggedin/home"><button type= "submit">Back</button></FORM>
+    <FORM action="/users/logout"><BUTTON type= "submit">Logout</BUTTON></FORM>
+</DIV>
+<div style="text-align: center">
+    <h2> My Notifications</h2>
+    <% for (var i = (notifications.notif.length - 1); 0 <= i; i--) { %>
+        <p ><a href=""><%= notifications.notif[i].user ; %></a>
+        <%= notifications.notif[i].action;%> you</p>
+        <% } %>
+</div>
+<!-- Make usernames clickablbe so that redirects to their profiles-->

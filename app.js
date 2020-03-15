@@ -31,8 +31,10 @@ app.use(express.static('./public/images'));
 //Routes
 app.use('/', require('./routes/index'));
 app.use('/loggedin', require('./routes/home'));
+app.use('/loggedin/notifications', require('./routes/notifications'));
 app.use('/users', require('./routes/users'));
 app.use('/people', require('./routes/home'));
+
 
 //listen to port
 app.listen(3000);
