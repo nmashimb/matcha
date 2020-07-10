@@ -3,6 +3,8 @@ const router = express.Router();
 var bodyParser = require('body-parser');
 var urlencodedParsor = bodyParser.urlencoded({extended: false });
 
-router.get('/', (req, res) => res.render('welcome'));
+
+router.get('/', (req, res) => res.render('welcome'))
+
 
 module.exports = router;
