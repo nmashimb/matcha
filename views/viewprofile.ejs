@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <DIV style="padding: 10px;">
+        <h1 style="float:left;padding-right: 10px;">Matcha </h1>
+        <FORM style="float:left;padding-top: 20px"><img src="../<%= user['profile_pic']%>" style="border-radius: 50%;width:50px;height:50px;padding: 10px;"></FORM><BR />
+        <FORM style="float:left;padding-top: 15px" action="/loggedin/home"><BUTTON type= "submit">Browse</BUTTON></FORM>
+        <FORM style="float:left;padding-top: 15px" action="/loggedin/myprofile"><BUTTON type= "submit">My Profile</BUTTON></FORM>
+        <FORM style="float:left;padding-top: 15px" action="/loggedin/visits"><BUTTON type= "submit">Visitors</BUTTON></FORM>
+        <FORM style="float:left;padding-top: 15px" action="/loggedin/notifications"><BUTTON type= "submit">Notifications <p id="not"></p></BUTTON></FORM>
+        <FORM style="float:left;padding-top: 15px" action="/loggedin/chat/connections"><BUTTON type= "submit">Chat</BUTTON></FORM>
+        <FORM style="float:left;padding-top: 15px" action="/users/logout"><BUTTON type= "submit">Logout</BUTTON></FORM>
+    </DIV>
+    <br />
+    <br /><br />
+    <br />
+     <DIV style="padding-left:50px;">
+        <label><h1> <%= visited['username'] %>'s profile </h1></label>
+        <h4><%= status %></h4>
+        <FORM style="padding-top: -10px"  action="/loggedin/viewprofile?id=<%= visited['id']%>&pic=<%=user['profile_pic']%>" method="POST">
+            <%if (status == 'not connected: send a like to connect!' || status == 'User waiting for you to like them back before you can chat!') {%>
+                <BUTTON type= "submit" name= "like" value="liked">Like</BUTTON>
+            <%}%>
+            <%if (status == 'connected') {%>
+                <BUTTON type= "submit" name="chat">Chat</BUTTON>
+            <%}%>
+            <%if (status == 'connected: you can now chat with the user' || status == 'waiting for the user to like you back before you can chat!' || status == 'connected') {%>
+                <BUTTON type= "submit" name="dislike" value="dislike">Unlike User</BUTTON>
+            <%}%>
+                <BUTTON type= "submit" name="block" value="block">Block User</BUTTON>
+                <BUTTON type= "submit" name="report">Report</BUTTON>
+        </FORM>
+        <img src ="../<%= visited['profile_pic']%>" style="border-radius: 50%;width:100px;height:100px;padding-left:5px;padding-top: 10px;" />
+        <% if (visited["online"] == "1") {%>
+            <h5 style="color: blue;">online</h5>
+        <% } %>
+         <% if (visited["online"] == "0") { %>
+           <h5 style="color:red;">offline since: <%= visited["on_off_date"]%></h5>
+        <% } %>
+        <p>Pop Score/10 : <%= visited["score"]%></p>
+        <P><%= visited['bio'] %></P>
+        <P>Location: </P>
+        <p>Age: <%= age %></p>
+        <p><%= visited['firstname']  %>  <%= visited['lastname']  %></p>
+        <P><%=visited['preference'] %> <%= visited['gender'] %> </P>
+        <P>Interests: </P>
+    
+        <br />
+        <div>
+            <label><h2> Gallery </h2></label>    
+            <% if (pics != null) { %>
+                <% pics.forEach(function(resul){ %>
+                    <% if (resul["name"] != ''){ %>
+                        <img src="../<%=resul['name']%>" style="width:130px;height:130px;float:inline-start;padding-left: 20px;">
+                    <%}%>
+                <% }); %>
+            <% } %>
+        </div>
+    </DIV>
+    
+    
+    <script>
+        (function (delay, callback) {
+            var loop = function () {
+                callback();
+                setTimeout(loop, delay);    
+            }; loop();
+        })(10000,function () {
+            xhttp = new XMLHttpRequest();
+            xhttp.open("GET","/loggedin/notifications/read", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("not").innerHTML = this.responseText;
+                    }
+                }
+            }
+    })
+    </script>
+    
+    <script>
+        if ('geolocation' in navigator){
+            console.log('geo available');
+            navigator.geolocation.getCurrentPosition( pos =>{
+                var lat = pos.coords.latitude;
+                var lon = pos.coords.longitude;
+                var xhttp;
+                xhttp = new XMLHttpRequest();
+                xhttp.open("POST","/loggedin/geolocation?lat="+lat+"&lon="+lon, true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send();
+            });
+        } else {
+                var lat = undefined;
+                var lon = undefined;
+                xhttp = new XMLHttpRequest();
+                xhttp.open("POST","/loggedin/geolocation?lat="+lat+"&lon="+lon, true);
+                xhttp.send();
+                console.log('geo unavailable');
+                console.log('geo unavailable');
+        }
+    </script>
+    <script defer src="http://localhost:3001/socket.io/socket.io.js"> </script>
+        <script  defer src="../script.js" > </script>
+</body>
+</html>

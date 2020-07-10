@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <DIV style="padding: 10px;">
+        <h1 style="float:left;padding-right: 10px;">Matcha </h1>
+        <FORM style="float:left;padding-top: 15px" action="/loggedin/home"><BUTTON type= "submit">Browse</BUTTON></FORM>
+        <FORM style="float:left;padding-top: 15px" action="/loggedin/myprofile"><BUTTON type= "submit">My Profile</BUTTON></FORM>
+        <FORM style="float:left;padding-top: 15px" action="/loggedin/visits"><BUTTON type= "submit"> Visits</BUTTON></FORM>
+        <FORM style="float:left;padding-top: 15px" action="/loggedin/notifications"><BUTTON type= "submit">Notifications <p id="not"></p></BUTTON></FORM>
+        <FORM style="float:left;padding-top: 15px" action="/loggedin/search"><BUTTON type= "submit">Search</BUTTON></FORM>
+        <FORM style="float:left;padding-top: 15px" action="/users/logout"><BUTTON type= "submit">Logout</BUTTON></FORM>
+    </DIV>
+    <br />
+    <br /><br />
+    
+    <h1>CHAT </h1>
+    <p id="tt" style="display: none;"><%= id%></p>
+
+    <div id="message-container">
+
+    </div>
+
+    <p id="p" style="display: none;"></p>
+    <form id="send-container">
+        <input type="text" id="message-input" oninput="fin()">
+        <div onclick="send()"> Send</div>
+    </form>
+
+
+    <script>
+        (function (delay, callback) {
+            var loop = function () {
+                callback();
+                setTimeout(loop, delay);    
+            }; loop();
+        })(10000,function () {
+            xhttp = new XMLHttpRequest();
+            xhttp.open("GET","/loggedin/notifications/read", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("not").innerHTML = this.responseText;
+                    }
+                }
+            }
+    })
+</script>
+
+    <script >
+        function fin() {
+            var x = document.getElementById("message-input").value;
+            document.getElementById("p").innerHTML = x;
+
+            
+        }
+
+        function send() {
+            var message = document.getElementById("p").innerHTML;
+            console.log(message);
+            var  id = document.getElementById("tt").innerText;
+            var xhttp
+            xhttp = new XMLHttpRequest()
+            xhttp.open('POST', '/loggedin/save?message='+message+'&id='+id, true);
+            xhttp.setRequestHeader("Content-type", "appliction/x-www-form-urlencoded");
+            xhttp.send("N=8");
+            
+        }
+
+        (
+        
+           
+        
+        
+        function (delay, callback) {
+            var loop = function () {
+                callback();
+                setTimeout(loop, delay);    
+            }; loop();
+        })(4000,function () {
+            var xhttp;
+            var r;
+            var i
+            var tt;
+
+            tt = document.getElementById("tt").innerText;
+            xhttp = new XMLHttpRequest()
+            xhttp.open('GET', '/loggedin/messages?id='+tt, true);
+            xhttp.setRequestHeader("Content-type", "appliction/x-www-form-urlencoded");
+            xhttp.send("N=8");
+            xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("message-container").innerHTML = this.responseText;
+            }
+        }
+    })
+    </script>   
+
+</body>
+</html>

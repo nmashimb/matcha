@@ -1,92 +1,268 @@
-<div>
-    <form action="/loggedin/home"><button type= "submit">Back</button></form>
-    <form action="/users/logout" method="GET"><button type= "submit">Logout</button></form>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <DIV style="padding: 10px;">
+        <h1 style="float:left;padding-right: 10px;">Matcha </h1>
+        <DIV>
+            <FORM style="float:left;padding-top: 20px"><img src="../<%=user['profile_pic']%>" style="border-radius: 50%;width:50px;height:50;padding: 10px;"></FORM><BR />
+            <%if (profile == "complete"){ %>
+                <FORM style="float:left;padding-top: 15px" action="/loggedin/home"><BUTTON type= "submit">Browse</BUTTON></FORM>
+                <FORM style="float:left;padding-top: 15px" action="/loggedin/search"><BUTTON type= "submit">Search</BUTTON></FORM>
+                <FORM style="float:left;padding-top: 15px" action="/loggedin/visits"><BUTTON type= "submit">Visits</BUTTON></FORM>
+                <FORM style="float:left;padding-top: 15px" action="/loggedin/notifications"><BUTTON type= "submit">Notifications <p id="not"></p></BUTTON></FORM>
+                <FORM style="float:left;padding-top: 15px" action="/loggedin/chat/connections"><BUTTON type= "submit">Chat</BUTTON></FORM>
+                <FORM style="float:left;padding-top: 15px" action="/users/logout"><BUTTON type= "submit">Logout</BUTTON></FORM>
+        <% } %>
+        <% if (profile == "incomplete") { %>
+            <FORM style="float:left;padding-top: 15px" action="/loggedin/search"><BUTTON type= "submit">Search</BUTTON></FORM>
+            <FORM style="float:left;padding-top: 15px" action="/users/logout"><BUTTON type= "submit">Logout</BUTTON></FORM>
+        <% } %>
+    </DIV>
+    </DIV>
+    <br /><br /><br /><br />
 
-<div style="text-align: center">
-    <label><h1>My Profile: <%= user.username %></h1></label>
-    <div>
-        <img src="../blankprofile.png" style="border-radius: 50%;width:100px;height:100px">
+
+<script  >
+
+
+            function myFunction(id,tag) {
+                    console.log("function")
+                    console.log(tag)
+        // Get the checkbox
+        var checkBox = document.getElementById(tag);
+        // Get the output text
+        var text = document.getElementById("text");
+
+
+        
+    //    If the checkbox is checked, display the output text
+        if (checkBox.checked == true){
+            var xhttp;
+            xhttp = new XMLHttpRequest()
+            xhttp.open("POST","/loggedin/tags?uid="+id+"&tag="+tag, true);
+            xhttp.setRequestHeader("Content-type", "appliction/x-www-form-urlencoded");
+            xhttp.send("N=8");
+            
+            text.style.display = "block";
+            text.innerHTML = tag;
+        } else {
+            text.style.display = "none";
+        }
+         }
+    </script>
+
+    
+    <div style="text-align: center;padding-right: 500px;">
+        <label><h1>My Profile: <%= user["username"] %></h1></label>
+        <%if (user["score"] != null) {%>
+            <p>Pop score:  <%= user["score"]%></p>
+        <% } %>
+        <h4 style="color:red;"><%= msg %></h4>
+        
+        <% if (pics != null) { %>
+            <% pics.forEach(function(resul){ %>
+                <% if (resul["name"] != ''){ %>
+                    <img src="../<%=resul['name']%>" style="width:100px;height:100px;float:inline-start; padding-left: 20px;">
+                    <a href= "/loggedin/deletepic?id=<%=resul['userid']%>&pic=<%=resul['name']%>"> <h5>Delete Pic </h5> </a>
+                    <a href= "/loggedin/makeprofilepic?pic=<%=resul['name']%>"> <h5>Make Profile Pic</h5> </a>
+                    <%}%>
+            <% }); %>
+        <% } %>
+        
+            <br /><br />
+        <div>   
+            <form method="POST" action="/loggedin/upload" enctype="multipart/form-data">
+                <div>
+                    <label>Add pictures:</label>
+                    <input type="file" name="profile_pic" />
+                    <input type="submit" name="sub_bttn" value="Upload" />
+                </div>
+            </form>
+    
+        </div>
+        <br />
+            <form action="/loggedin/myprofile" method="POST">
+                <label style="font-weight: bold">Bio:</label><br />
+                    <input style="width: 210px;" type="text" name="bio" placeholder="What I want people to know about me..."/><br />
+                    <input type="submit" name="subbio" value="Change Bio"/>
+            </form>
+            <form action="/loggedin/myprofile" method="POST">    
+                <label style="font-weight: bold">Gender:</label><br />
+                    Male <input type="radio" name="gender" value="male"/>
+                    Female <input type="radio" name="gender" value="female"/>
+                <br /><br />
+    
+                <label style="font-weight: bold">Preference (Check one or both):</label><br />
+                    Females <input type="checkbox" name="females" value="females"/>
+                    Males <input type="checkbox" name="males" value="males"/>
+                <br /><br />
+                <input type="submit" name="subgender" />
+                <br />
+               
+            </form>
+            <form action="/loggedin/myprofile" method="POST">
+                <label style="font-weight: bold">Interests:</label><br />
+                <p></p>
+                #Sports  <input type="checkbox" id="Sports" onclick="myFunction(<%= user["id"] %>,'Sports')"/>
+
+                
+                #Fitness <input type="checkbox" id="fitness" onclick="myFunction(<%= user["id"] %>,'fitness')" />
+                #Books <input type="checkbox" id="books" onclick="myFunction(<%= user["id"] %>,'books')" /> 
+                #Music <input type="checkbox" id="music" onclick="myFunction(<%= user["id"] %>,'music')" /> 
+                #Nedflix <input type="checkbox" id="nedflix" onclick="myFunction(<%= user["id"] %>,'nedflix')" />
+                #Fashion <input type="checkbox" id="fashion" onclick="myFunction(<%= user["id"] %>,'fashion')" />
+                <br />
+                #Family <input type="checkbox" id="family" onclick="myFunction(<%= user["id"] %>,'family')" />
+                #Work <input type="checkbox" id="work" onclick="myFunction(<%= user["id"] %>,'work')" />
+                #Politics <input type="checkbox" id="politics" onclick="myFunction(<%= user["id"] %>,'politics')" />
+                #Spirituality <input type="checkbox" id="spirituality" onclick="myFunction(<%= user["id"] %>,'spirituality')" />
+                #Religion <input type="checkbox" id="religion" onclick="myFunction(<%= user["id"] %>,'religion')" />
+                #Travel <input type="checkbox" id="travel" onclick="myFunction(<%= user["id"] %>,'travel')" />
+                <br />
+                #Adventure <input type="checkbox" id="adventure" onclick="myFunction(<%= user["id"] %>,'adventure')" />
+                #Concerts <input type="checkbox" id="concerts" onclick="myFunction(<%= user["id"] %>,'concerts')" />
+                #Photography <input type="checkbox" id="photography" onclick="myFunction(<%= user["id"] %>,'photography')" />
+                #Programming <input type="checkbox" id="programming" onclick="myFunction(<%= user["id"] %>,'programming')" />
+                #Animals <input type="checkbox" id="animals" onclick="myFunction(<%= user["id"] %>,'animals')" />
+                #Sleep <input type="checkbox" id="sleep" onclick="myFunction(<%= user["id"] %>,'sleep')" />
+                <br />
+                #Cooking <input type="checkbox" id="cooking" onclick="myFunction(<%= user["id"] %>,'cooking')" />
+                #Food <input type="checkbox" id="food" onclick="myFunction(<%= user["id"] %>,'food')" />
+                #Socialise <input type="checkbox" id="socialise" onclick="myFunction(<%= user["id"] %>,'socialise')" />
+                #Drinks <input type="checkbox" id="drinks" onclick="myFunction(<%= user["id"] %>,'drinks')" "/>
+                #Smoking <input type="checkbox" id="smoking" onclick="myFunction(<%= user["id"] %>,'smoking')" />
+                #Dance <input type="checkbox" id="dance" onclick="myFunction(<%= user["id"] %>,'dance')" />
+                <br />
+                #Tattoos <input type="checkbox" id="tattoos" onclick="myFunction(<%= user["id"] %>,'tattoos')" />
+                #Pets <input type="checkbox" id="pets" onclick="myFunction(<%= user["id"] %>,'pets')" />
+                #Laughs <input type="checkbox" id="laughs" onclick="myFunction(<%= user["id"] %>,'laughs')" />
+                #Nerd <input type="checkbox" id="nerd" onclick="myFunction(<%= user["id"] %>,'nerd')" />
+                #Walks <input type="checkbox" id="walks" onclick="myFunction(<%= user["id"] %>,'walks')" />
+                #Gaming <input type="checkbox" id="gaming" onclick="myFunction(<%= user["id"] %>,'gaming')" />
+<!-- 
+               <% function myFunction() {%>
+                <%     var checkbox = document.getElementById("myCheck");%>
+                <%    var text = document.getElementById("text");%>
+                <%    if (checkbox.checked == true) %>
+                    <%        text.style.display = "block";%>
+    
+                    <%  }%> -->
+
+
+
+                
+
+<p id="text" style= "display : none">tsk!</p>
+
+
+                <!-- #Fitness <input type="checkbox" name= "interest" value="#fitness"/>
+                #Books <input type="checkbox" name= "interest" value="#books"/> 
+                #Music <input type="checkbox" name= "interest" value="#music"/> 
+                #Nedflix <input type="checkbox" name= "interest" value="#nedflix"/>
+                #Fashion <input type="checkbox" name= "interest" value="#fashion"/>
+                <br />
+                #Family <input type="checkbox" name= "interest" value="#family"/>
+                #Work <input type="checkbox" name= "interest" value="#work"/>
+                #Politics <input type="checkbox" name= "interest" value="#politics"/>
+                #Spirituality <input type="checkbox" name= "interest" value="#spirituality"/>
+                #Religion <input type="checkbox" name= "interest" value="#religion"/>
+                #Travel <input type="checkbox" name= "interest" value="#travel"/>
+                <br />
+                #Adventure <input type="checkbox" name= "interest" value="#adventure"/>
+                #Concerts <input type="checkbox" name= "interest" value="#concerts"/>
+                #Photography <input type="checkbox" name= "interest" value="#photography"/>
+                #Programming <input type="checkbox" name= "interest" value="#programming"/>
+                #Animals <input type="checkbox" name= "interest" value="#animals"/>
+                #Sleep <input type="checkbox" name= "interest" value="#sleep"/>
+                <br />
+                #Cooking <input type="checkbox" name= "interest" value="#cooking"/>
+                #Food <input type="checkbox" name= "interest" value="#food"/>
+                #Socialise <input type="checkbox" name= "interest" value="#socialise"/>
+                #Drinks <input type="checkbox" name= "interest" value="#drinks"/>
+                #Smoking <input type="checkbox" name= "interest" value="#smoking"/>
+                #Dance <input type="checkbox" name= "interest" value="#dance"/>
+                <br />
+                #Tattoos <input type="checkbox" name="interest" value= "#tattoos"/>
+                #Pets <input type="checkbox" name="interest" value= "#pets"/>
+                #Laughs <input type="checkbox" name= "interest" value="#laughs"/>
+                #Nerd <input type="checkbox" name="interest" value= "#nerd"/>
+                #Walks <input type="checkbox" name="interest" value= "#walks"/>
+                #Gaming <input type="checkbox" name="interest" value= "#gaming"/> -->
+                <br /><br />
+                <input type="submit" name= "subinterests" value="Add Interests">
+            </form>
+    
+            <label style="font-weight: bold">Settings</label>
+            <br /><br />
+            <form action= "/loggedin/myprofile" method="POST">   
+                <input type="text" name="cusername" placeholder="Update Username"><input type="submit" name="subusername" value="Update Username">
+            </form>
+            <form action= "/loggedin/myprofile" method="POST">   
+                <input type="text" name="cfirstname" placeholder="Update Firstname"><input type="submit" name="subfirstname" value="Update Firstname">
+            </form>
+            <form action= "/loggedin/myprofile" method="POST">   
+                <input type="text" name="clastname" placeholder="Update Lastname"><input type="submit" name="sublastname" value="Update Lastname">
+            </form>
+            <form action= "/loggedin/myprofile" method="POST">
+                <input type="email" name="cemail" placeholder="Update Email"><input type="submit" name="subemail" value="Update Email">
+                <br />
+                <br />
+            </form>
+            <form action= "/loggedin/myprofile" method="POST">   
+                <input type="password" name="cpass" placeholder="Update Password"><br />
+                <input type="password" name="cpassconf" placeholder="Confirm Password">
+                <br />
+                <input type="submit" name="subpassword" value="Update Password">  
+            </form>
     </div>
-    <br />
-        <form action="/loggedin/myprofile" method="POST">
-            <label style="font-weight: bold">Bio:</label><br />
-                <input style="width: 210px;" type="text" name="bio" placeholder="What I want people to know about me..."/><br />
-                <input type="submit" name="subbio" value="Change Bio"/>
-        </form>
-        <form action="/loggedin/myprofile" method="POST">    
-            <label style="font-weight: bold">Gender:</label><br />
-                Male <input type="radio" name="gender" value="male"/>
-                Female <input type="radio" name="gender" value="female"/>
-            <br /><br />
 
-            <label style="font-weight: bold">Preference (Check one or both):</label><br />
-                Females <input type="checkbox" name="females" value="females"/>
-                Males <input type="checkbox" name="males" value="males"/>
-            <br /><br />
-            <input type="submit" name="subgender" />
-            <br />
-        </form>
-        <form action="/loggedin/myprofile" method="POST">
-            <label style="font-weight: bold">Interests:</label><br />
-            #Sports <input type="checkbox" name= "interest" value="#sports"/>
-            #Fitness <input type="checkbox" name= "interest" value="#fitness"/>
-            #Books <input type="checkbox" name= "interest" value="#books"/> 
-            #Music <input type="checkbox" name= "interest" value="#music"/> 
-            #Nedflix <input type="checkbox" name= "interest" value="#nedflix"/>
-            #Fashion <input type="checkbox" name= "interest" value="#fashion"/>
-            <br />
-            #Family <input type="checkbox" name= "interest" value="#family"/>
-            #Work <input type="checkbox" name= "interest" value="#work"/>
-            #Politics <input type="checkbox" name= "interest" value="#politics"/>
-            #Spirituality <input type="checkbox" name= "interest" value="#spirituality"/>
-            #Religion <input type="checkbox" name= "interest" value="#religion"/>
-            #Travel <input type="checkbox" name= "interest" value="#travel"/>
-            <br />
-            #Adventure <input type="checkbox" name= "interest" value="#adventure"/>
-            #Concerts <input type="checkbox" name= "interest" value="#concerts"/>
-            #Photography <input type="checkbox" name= "interest" value="#photography"/>
-            #Programming <input type="checkbox" name= "interest" value="#programming"/>
-            #Animals <input type="checkbox" name= "interest" value="#animals"/>
-            #Sleep <input type="checkbox" name= "interest" value="#sleep"/>
-            <br />
-            #Cooking <input type="checkbox" name= "interest" value="#cooking"/>
-            #Food <input type="checkbox" name= "interest" value="#food"/>
-            #Socialise <input type="checkbox" name= "interest" value="#socialise"/>
-            #Drinks <input type="checkbox" name= "interest" value="#drinks"/>
-            #Smoking <input type="checkbox" name= "interest" value="#smoking"/>
-            #Dance <input type="checkbox" name= "interest" value="#dance"/>
-            <br />
-            #Tattoos <input type="checkbox" name="interest" value= "#tattoos"/>
-            #Pets <input type="checkbox" name="interest" value= "#pets"/>
-            #Laughs <input type="checkbox" name= "interest" value="#laughs"/>
-            #Nerd <input type="checkbox" name="interest" value= "#nerd"/>
-            #Walks <input type="checkbox" name="interest" value= "#walks"/>
-            #Gaming <input type="checkbox" name="interest" value= "#gaming"/>
-            <br /><br />
-            <input type="submit" name= "subinterests" value="Add Interests">
-        </form>
-
-        <label style="font-weight: bold">Settings</label>
-        <br /><br />
-        <form action= "/loggedin/myprofile" method="POST">   
-            <input type="text" name="cusername" placeholder="Update Username"><input type="submit" name="subusername">
-        </form>
-        <form action= "/loggedin/myprofile" method="POST">   
-            <input type="text" name="cfirstname" placeholder="Update Firstname"><input type="submit" name="subfirstname">
-        </form>
-        <form action= "/loggedin/myprofile" method="POST">   
-            <input type="text" name="clastname" placeholder="Update Lastname"><input type="submit" name="sublastname">
-        </form>
-        <form action= "/loggedin/myprofile" method="POST">
-            <input type="email" name="cemail" placeholder="Update Email"><input type="submit" name="subemail">
-            <br />
-            <br />
-        </form>
-        <form action= "/loggedin/myprofile" method="POST">   
-            <input type="password" name="cpass" placeholder="Update Password"><br />
-            <input type="password" name="cpassconf" placeholder="Confirm Password">
-            <br />
-            <input type="submit" name="subpassword">  
-        </form>
-</div>
+    <script>
+        (function (delay, callback) {
+            var loop = function () {
+                callback();
+                setTimeout(loop, delay);    
+            }; loop();
+        })(10000,function () {
+            xhttp = new XMLHttpRequest();
+            xhttp.open("GET","/loggedin/notifications/read", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("not").innerHTML = this.responseText;
+                    }
+                }
+            }
+    })
+</script>
+    <script>
+        if ('geolocation' in navigator){
+            console.log('geo available');
+            navigator.geolocation.getCurrentPosition( pos =>{
+                var lat = pos.coords.latitude;
+                var lon = pos.coords.longitude;
+                var xhttp;
+                xhttp = new XMLHttpRequest();
+                xhttp.open("POST","/loggedin/geolocation?lat="+lat+"&lon="+lon, true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send();
+            });
+        } else {
+                var lat = undefined;
+                var lon = undefined;
+                xhttp = new XMLHttpRequest();
+                xhttp.open("POST","/loggedin/geolocation?lat="+lat+"&lon="+lon, true);
+                xhttp.send();
+                console.log('geo unavailable');
+        }
+    </script> 
+    <script defer src="http://localhost:3001/socket.io/socket.io.js"></script>
+    <script defer src="../script.js"></script>    
+</body>
+</html>

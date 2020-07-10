@@ -1,4 +1,12 @@
-<div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
         <% include('./partials/messages.ejs'); %>
     <form action="/users/register" method="POST">
         Username: <input 
@@ -18,6 +26,12 @@
         name="lastname" 
         placeholder="Enter your last name" 
         value="<%= typeof lastname != 'undefined' ? lastname : '' %>"
+        /><br />
+        Date of Birth: <input 
+        type= "date" 
+        name="dob" 
+        placeholder="Date of birth" 
+        value="<%= typeof dob != 'undefined' ? dob : '' %>"
         /><br />
         Email: <input 
         type= "email" 
@@ -39,5 +53,10 @@
         /><br />
         <button type="submit">Register</button>
     </form>
-    <p>Have An Account? <a href="/users/login">Login</a></p>
-</div>
+    <p>Have An Account? <a href="/users/login">Login</a><br />
+        <a href="users/reset">Forgot Password?</a>
+    </div>                
+    </p>
+</body>
+</html>
+    
