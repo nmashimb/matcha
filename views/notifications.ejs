@@ -1,82 +1,94 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <DIV style="padding: 10px;">
-        <h1 style="float:left;padding-right: 10px;"> Matcha </h1>
-        <FORM style="float:left;padding-top: 20px"><img src="../<%=user['profile_pic']%>" style="border-radius: 50%;width:50px;height:50px;padding: 10px;"></FORM><BR />
-        <FORM style="float:left;padding-top: 15px" action="/loggedin/home"><BUTTON type= "submit">Browse</BUTTON></FORM>
-        <FORM style="float:left;padding-top: 15px" action="/loggedin/myprofile"><BUTTON type= "submit">My Profile</BUTTON></FORM>
-        <FORM style="float:left;padding-top: 15px" action="/loggedin/visits"><BUTTON type= "submit">Visits</BUTTON></FORM>
-        <FORM style="float:left;padding-top: 15px" action="/loggedin/chat/connections"><BUTTON type= "submit">Chat</BUTTON></FORM>
-        <FORM style="float:left;padding-top: 15px" action="/loggedin/search"><BUTTON type= "submit">Search</BUTTON></FORM>
-        <FORM style="float:left;padding-top: 15px" action="/users/logout"><BUTTON type= "submit">Logout</BUTTON></FORM>
-    </DIV>
-    <br /><br /><br />
+<DIV style="padding: 10px;">
+    <h1 style="float:left;padding-right: 10px;"> Matcha </h1>
+    <FORM style="float:left;padding-top: 20px"><img src="../<%=user['profile_pic']%>" style="border-radius: 50%;width:50px;height:50px;padding: 10px;"></FORM><BR />
+    <FORM style="float:left;padding-top: 15px" action="/loggedin/home"><BUTTON type= "submit">Browse</BUTTON></FORM>
+    <FORM style="float:left;padding-top: 15px" action="/loggedin/myprofile"><BUTTON type= "submit">My Profile</BUTTON></FORM>
+    <FORM style="float:left;padding-top: 15px" action="/loggedin/visits"><BUTTON type= "submit">Visits</BUTTON></FORM>
+    <FORM style="float:left;padding-top: 15px" action="/loggedin/chat/connections"><BUTTON type= "submit">Chat <p id="c"></p></BUTTON></FORM>
+    <FORM style="float:left;padding-top: 15px" action="/loggedin/search"><BUTTON type= "submit">Search</BUTTON></FORM>
+    <FORM style="float:left;padding-top: 15px" action="/users/logout"><BUTTON type= "submit">Logout</BUTTON></FORM>
+</DIV>
+<br /><br /><br />
+
+<div style="float: inline-start;">
+    <h2> MY NOTIFICATIONS</h2><br />
+   
+</div>
+
+<p id="n">
     
-    <div style="float: inline-start;">
-        <h2> MY NOTIFICATIONS</h2><br />
-       
-    </div>
-    
-    <p id="n">
-        
-    </p>
-    <!-- Make usernames clickablbe so that redirects to their profiles-->
-    <script>
-            (function (delay, callback) {
-                var loop = function () {
-                    callback();
-                    setTimeout(loop, delay);    
-                }; loop();
-            })(10000,function () {
-                var xhttp;
-                var r;
-                var i
-    
-                xhttp = new XMLHttpRequest()
-                xhttp.open('GET', '/loggedin/notifications', true);
-                xhttp.setRequestHeader("Content-type", "appliction/x-www-form-urlencoded");
-                xhttp.send("N=8");
-                xhttp.onreadystatechange = function() {
+</p>
+<!-- Make usernames clickablbe so that redirects to their profiles-->
+<script>
+        (function (delay, callback) {
+            var loop = function () {
+                callback();
+                setTimeout(loop, delay);    
+            }; loop();
+        })(10000,function () {
+            var xhttp;
+            var r;
+            var i
+
+            xhttp = new XMLHttpRequest()
+            xhttp.open('GET', '/loggedin/notifications', true);
+            xhttp.setRequestHeader("Content-type", "appliction/x-www-form-urlencoded");
+            xhttp.send("N=8");
+            xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                r = JSON.parse(this.responseText);
+                i = "";
+                r.forEach(e => {
+                    i = i + "<div>"+e["username"]  + "  "+ e["reason"]  + " your profile </div>";
+                });
+                console.log("a");
+                document.getElementById("n").innerHTML = this.responseText;
+
+            }
+        }
+    })
+    if ('geolocation' in navigator){
+        console.log('geo available');
+        navigator.geolocation.getCurrentPosition( pos =>{
+            var lat = pos.coords.latitude;
+            var lon = pos.coords.longitude;
+            var xhttp;
+            xhttp = new XMLHttpRequest();
+            xhttp.open("POST","/loggedin/geolocation?lat"+lat+"&lon="+lon, true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send();
+        });
+    } else {
+            var lat = undefined;
+            var lon = undefined;
+            xhttp = new XMLHttpRequest();
+            xhttp.open("POST","/loggedin/geolocation?lat"+lat+"&lon="+lon, true);
+            xhttp.send();
+            console.log('geo unavailable');
+            console.log('geo unavailable');
+    }
+</script>
+
+<script>
+    (function (delay, callback) {
+        var loop = function () {
+            callback();
+            setTimeout(loop, delay);    
+        }; loop();
+    })(10000,function () {
+        xhttp = new XMLHttpRequest();
+        xhttp.open("GET","/loggedin/chat/update", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
                 if (this.readyState == 4 && this.status == 200) {
-                    r = JSON.parse(this.responseText);
-                    i = "";
-                    r.forEach(e => {
-                        i = i + "<div>"+e["username"]  + "  "+ e["reason"]  + " your profile </div>";
-                    });
-                    console.log("a");
-                    document.getElementById("n").innerHTML = i;
-    
+                document.getElementById("c").innerHTML = this.responseText;
                 }
             }
-        })
-        if ('geolocation' in navigator){
-            console.log('geo available');
-            navigator.geolocation.getCurrentPosition( pos =>{
-                var lat = pos.coords.latitude;
-                var lon = pos.coords.longitude;
-                var xhttp;
-                xhttp = new XMLHttpRequest();
-                xhttp.open("POST","/loggedin/geolocation?lat"+lat+"&lon="+lon, true);
-                xhttp.setRequestHeader("Content-type", "application/json");
-                xhttp.send();
-            });
-        } else {
-                var lat = undefined;
-                var lon = undefined;
-                xhttp = new XMLHttpRequest();
-                xhttp.open("POST","/loggedin/geolocation?lat"+lat+"&lon="+lon, true);
-                xhttp.send();
-                console.log('geo unavailable');
-                console.log('geo unavailable');
         }
-    </script>
-    <script defer src="http://localhost:3001/socket.io/socket.io.js"> </script>
-        <script  defer src="../script.js" > </script>
-</body>
-</html>
+})
+</script>
+
+<script defer src="http://localhost:3001/socket.io/socket.io.js"> </script>
+    <script  defer src="../script.js" > </script>

@@ -21,7 +21,7 @@ const { exit } = require('process');
 const { isIP } = require('net');
 const { Session } = require('inspector');
 const { count } = require('console');
-//var ip = require('ip');
+var ip = require('ip');
 const { isBuffer } = require('util');
 
 app.use(express.json({limit: '1mb'}));
@@ -48,8 +48,9 @@ router.post('/save', urlencodedParsor, (req, res, next) => {
     const search_params = current_url.searchParams;
     var id = search_params.get('id');
     var message = search_params.get('message');
+    var name = search_params.get('username');
     
-   func.enq("INSERT INTO `chats`( `connectionid`,`message`, `senderid`) VALUES ('"+id+"','"+message+"','"+session.uid+"')");
+   func.enq("INSERT INTO `chats`( `connectionid`,`message`, `senderid`, `recusername`) VALUES ('"+id+"','"+message+"','"+session.uid+"', '"+name+"')");
 return
 
 });
@@ -134,7 +135,7 @@ router.get('/chats', urlencodedParsor, (req, res) => {
                                 else
                                 {
                                     if (ss[j]["u1"] == dd[i]["id"]) {
-                                        v = v + "<br> <a href='/loggedin/viewchat?id="+ss[j]["id"]+"'><img src='/"+dd[i]['profile_pic']+"' style='border-radius: 50%;width:30px;height:30px'></a><h3>"+ dd[i]["username"] +"<h5 style='color: blue';>online</h5></h3></p>";
+                                        v = v + "<br> <a href='/loggedin/viewchat?recusername="+ss[j]['username']+"&id="+ss[j]["id"]+"'><img src='/"+dd[i]['profile_pic']+"' style='border-radius: 50%;width:30px;height:30px'></a><h3>"+ dd[i]["username"] +"<h5 style='color: blue';>online</h5></h3></p>";
                                     }
                                 }
 
@@ -158,9 +159,12 @@ router.get('/notifications', urlencodedParsor, (req, res) => {
     var session = req.session;
 
     func.enqp("SELECT * FROM notifications WHERE userid = '"+session.uid+"'").then( (ss, err) =>{
-
+        var i = "";
+        ss.forEach(e => {
+            i = i + "<div>"+e["username"]+"   "+e["reason"]+" your profile</div>"
+        });
        res.writeHead(200)
-       res.write(JSON.stringify(ss));
+       res.write(i);
        res.end();
      
     })
@@ -342,7 +346,7 @@ router.get('/visits', (req, res) => {
 //geoloction
 router.post('/geolocation', urlencodedParsor, (req, res, next) => {
     var session = req.session;
-   /* ip.address();
+    ip.address();
     ip.isEqual('::1', '::0:1');
     ip.toBuffer('127.0.0.1');
     ip.toString(new Buffer.from([127, 0, 0, 1]));
@@ -352,7 +356,7 @@ router.post('/geolocation', urlencodedParsor, (req, res, next) => {
     ip.not('255.255.255.0');
     ip.or('192.168.1.134', '0.0.0.255');
     ip.isPrivate('127.0.0.1');
-    ip.isV6Format('::ffff:127.0.0.1');*/
+    ip.isV6Format('::ffff:127.0.0.1');
 
     const current_url = new URL(req.protocol + '://' + req.get('host') + req.originalUrl);
     const search_params = current_url.searchParams;
@@ -443,11 +447,14 @@ router.get('/viewprofile', (req, res, next) => {
                 });
                 var age = getAge(user['date_of_birth']);
                 func.SelectQ("SELECT * FROM pics WHERE userid = '" + id +"' ORDER BY id DESC").then((pics, err) => {
-                    if (pics){
-                        res.render('viewprofile', {user, visited, status:status, pics, age:age});   
-                    }
-                    else
-                        res.render('viewprofile', {user, visited, status:status, pics: undefined, age:age});   
+                    func.enqp("SELECT * FROM tags WHERE userid = '" + id +"' ORDER BY id DESC").then((tags, err) => {
+                        if (err) throw err;
+                        if (pics){
+                            res.render('viewprofile', {user, visited, status:status, pics, age:age, tags: tags});   
+                        }
+                        else
+                            res.render('viewprofile', {user, visited, status:status, pics: undefined, age:age, tags: tags});  
+                    });
                 });
             
                 //pointFrom = new GeoPoint(-26.2052125, 28.0397575);

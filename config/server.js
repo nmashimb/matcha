@@ -60,7 +60,7 @@ con.connect(function(err) {
       console.log("table notifcations created");
     })
 
-    var sql = "CREATE TABLE IF NOT EXISTS chats(id INT(11) AUTO_INCREMENT PRIMARY KEY, connectionid INT(11) , message VARCHAR(255), senderid INT(11))";
+    var sql = "CREATE TABLE IF NOT EXISTS chats(id INT(11) AUTO_INCREMENT PRIMARY KEY, connectionid INT(11) , message VARCHAR(255), senderid INT(11), recusername VARCHAR(50), readm int(1))";
     con.query(sql, function(err, result) {
       if (err) throw err;
       console.log("table chats created");

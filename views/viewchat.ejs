@@ -32,7 +32,7 @@
         <input type="text" id="message-input" oninput="fin()">
         <div onclick="send()"> Send</div>
     </form>
-
+    <p id="q" style="display: none;"> <%= recusername %></p>
 
     <script>
         (function (delay, callback) {
@@ -55,6 +55,28 @@
     })
 </script>
 
+
+<script>
+    (function (delay, callback) {
+        var loop = function () {
+            callback();
+            setTimeout(loop, delay);    
+        }; loop();
+    })(10000,function () {
+        xhttp = new XMLHttpRequest();
+        xhttp.open("GET","/loggedin/chat/update", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("c").innerHTML = this.responseText;
+                }
+            }
+        }
+})
+</script>
+
     <script >
         function fin() {
             var x = document.getElementById("message-input").value;
@@ -67,9 +89,10 @@
             var message = document.getElementById("p").innerHTML;
             console.log(message);
             var  id = document.getElementById("tt").innerText;
+            var  name = document.getElementById("q").innerText;
             var xhttp
             xhttp = new XMLHttpRequest()
-            xhttp.open('POST', '/loggedin/save?message='+message+'&id='+id, true);
+            xhttp.open('POST', '/loggedin/save?username='+name+'&message='+message+'&id='+id, true);
             xhttp.setRequestHeader("Content-type", "appliction/x-www-form-urlencoded");
             xhttp.send("N=8");
             

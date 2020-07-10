@@ -190,7 +190,7 @@ module.exports.userInfo = function (userI){
       });
     con.connect(function(err){
         if (err) throw err;
-        var sql = "INSERT INTO userinfor (username, firstname, lastname, email, password, token, verified,date_of_birth, age) VALUES ('"+ userI.username +"','"+ userI.firstname +"','"+ userI.lastname +"','"+ userI.email +"','"+ userI.password +"','"+ userI.token +"','"+userI.verified+"','"+userI.dob+"','"+userI.age+"')";
+        var sql = "INSERT INTO userinfor (username, firstname, lastname, email, password, token, verified,date_of_birth, preference, profile_pic,age) VALUES ('"+ userI.username +"','"+ userI.firstname +"','"+ userI.lastname +"','"+ userI.email +"','"+ userI.password +"','"+ userI.token +"','"+userI.verified+"','"+userI.dob+"', 'bisexual','"+userI.pp+"','"+userI.age+"')";
         con.query(sql, function(err, result) {
             if (err) throw err;
             sendmail({

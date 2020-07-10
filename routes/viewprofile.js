@@ -22,6 +22,9 @@ router.post('/', urlencodedParsor, (req, res, next) => {
 
     console.log(req.body);
     console.log(req.body.like);
+    if (req.body.chat != undefined){
+        res.redirect('/loggedin/chat/connections');
+    }
     if (pic == 'profile_pic-blankprofile.png'){
         res.redirect("/loggedin/viewprofile?id="+id+"&error=uploadprofilepic");
         exit;

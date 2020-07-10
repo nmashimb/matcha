@@ -142,7 +142,7 @@ router.post('/register', urlencodedParsor, (req, res) => {
         res.redirect('/users/register?registration=underage');
     else if (!username || !firstname || !lastname || !email || !password || !passwordc || !dob)
         res.redirect('/users/register?registration=fieldsincomplete');
-        if (password !== passwordc)
+    else if (password !== passwordc)
         res.redirect('/users/register?registration=passwordsdontmatch');
     else if (password.length < 6)
         res.redirect('/users/register?registration=passwordshort');
@@ -157,9 +157,11 @@ router.post('/register', urlencodedParsor, (req, res) => {
                 var token = bcrypt.hashSync(passwordc + Date.now(), 10);
                 password = bcrypt.hashSync(password, 10);
                 var v = 1; //CHANGE ME TO 0
-                var userInfo = {username: username, firstname: firstname, lastname: lastname, email: email, password: password, token: token, verified: v, dob:dob, age: getAge(dob)};
+                var pp = "profile_pic-blankprofile.png";
+                var userInfo = {username: username, firstname: firstname, lastname: lastname, email: email, password: password, token: token, verified: v, pp:pp,dob:dob, age: getAge(dob)};
                 func.userInfo(userInfo);
-                func.enq("UPDATE userinfor SET profile_pic = '"+"profile_pic-blankprofile.png"+"' WHERE  username = '" +username+ "'");
+                
+               // func.enq("UPDATE userinfor SET profile_pic = '"+pp+"' WHERE  username = '" +username+ "'");
                 res.redirect('/users/login?login=successful&verificationmail=sent');        
             }
         });

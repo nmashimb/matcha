@@ -24,7 +24,17 @@ router.use(sessions({
     }
 }));
 
-
+router.get('/update', (req, res) =>{
+    var session = req.session;
+    func.enqp("SELECT * FROM chats WHERE recusername = '"+session.userid+"' AND readm='"+"0"+"'").then((resul, err)=>{
+        if (err) throw err;
+        console.log(resul.length);
+        res.writeHead(200);
+        res.write(JSON.stringify(resul.length));
+        res.end();
+   })
+   return
+})
 //browsing
 router.get('/connections', (req, res) =>{
     var session = req.session;

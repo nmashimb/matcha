@@ -1,28 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <div>
-        <form action="/users/login" method= "POST">
-            Username/Email: <input 
-            type= "text" 
-            name="userormail" 
-            placeholder="Enter your username/email" 
-            value="<%= typeof userorname != 'undefined' ? username : '' %>"
-            />
-            Password: <input 
-            type= "password" 
-            name="password" 
-            placeholder="Enter your password" 
-            />
-            <button type="submit">Login</button>
-        </form>
-        No Account? <a href="/users/register">Register</a><br />
-        <a href="users/reset">Forgot Password?</a>
-    </div>
-</body>
-</html>
+<div>
+    <form action="/users/login" method= "POST">
+        Username/Email: <input 
+        type= "text" 
+        name="userormail" 
+        placeholder="Enter your username/email" 
+        value="<%= typeof userorname != 'undefined' ? username : '' %>"
+        />
+        Password: <input 
+        type= "password" 
+        name="password" 
+        placeholder="Enter your password" 
+        />
+        <button type="submit">Login</button>
+    </form>
+    No Account? <a href="/users/register">Register</a><br />
+    <a href="users/reset">Forgot Password?</a>
+</div>
