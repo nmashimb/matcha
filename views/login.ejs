@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/styles.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container" >
+        <!-- <h1 class="-text">Login To Mita</h1> -->
+        <div class="login-form" style="background-color: white;">
+            <h1 class="login-text">Login To Mita</h1>
+
+            <form action="/users/login" method= "POST">
+                Username/Email: <br><input class="login-input"
+                type= "text" 
+                name="userormail" 
+                placeholder="Enter your username/email" 
+                value="<%= typeof userorname != 'undefined' ? username : '' %>"
+                /><br>
+                Password: <br><input class="login-input"
+                type= "password" 
+                name="password" 
+                placeholder="Enter your password" 
+                /> <br>
+                <button type="submit">Login</button>
+            </form>
+
+            <div class="login-links">
+                <p> No Account?</p> <a href="/users/register" name="reg">Register </a><br />
+            </div>
+            <div class="login-links">
+                <a  href="/users/reset">Forgot Password?</a>
+             </div>
+        </div>
+        
+        
+
+    </div>
+</body>
+</html>

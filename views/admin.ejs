@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <DIV style="padding: 10px;">
+        <h1 style="float:left;padding: 10px;">Matcha admin</h1>
+        
+        <FORM style="float:left;padding-top: 15px" action="/users/logout"><BUTTON type= "submit">Logout</BUTTON></FORM>
+    </DIV><br /><br />
+    
+    <button onclick="t()">click to see or reload new reports</button>
+    <br />
+
+    <p id="c"></p>
+    <script>
+        function drop(p) {
+            console.log(p);
+            xhttp = new XMLHttpRequest();
+            xhttp.open("GET","/loggedin/chat/drop?id="+p, true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send();
+        }
+        function t ()  {
+            xhttp = new XMLHttpRequest();
+            xhttp.open("GET","/loggedin/chat/reports", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("c").innerHTML = this.responseText;
+                    }
+                }
+            }
+            
+        }
+         
+    </script>
+
+  
+</body>
+</html>

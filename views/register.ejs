@@ -1,0 +1,52 @@
+<div>
+        <% include('./partials/messages.ejs'); %>
+    <form action="/users/register" method="POST">
+        Username: <input 
+        type= "text" 
+        name="username" 
+        placeholder="Enter your username" 
+        value="<%= typeof username != 'undefined' ? username : '' %>"
+        /><br />
+        First Name: <input 
+        type= "text" 
+        name="firstname" 
+        placeholder="Enter your first name" 
+        value="<%= typeof firstname != 'undefined' ? firstname : '' %>"
+        /><br />
+        Last Name: <input 
+        type= "text" 
+        name="lastname" 
+        placeholder="Enter your last name" 
+        value="<%= typeof lastname != 'undefined' ? lastname : '' %>"
+        /><br />
+        Date of Birth: <input 
+        type= "date" 
+        name="dob" 
+        placeholder="Date of birth" 
+        value="<%= typeof dob != 'undefined' ? dob : '' %>"
+        /><br />
+        Email: <input 
+        type= "email" 
+        name="email" 
+        placeholder="Enter your email" 
+        value="<%= typeof email != 'undefined' ? email : '' %>"
+        /><br />
+        Password: <input 
+        type= "password" 
+        name="password" 
+        placeholder="Enter your password" 
+        value="<%= typeof password != 'undefined' ? password : '' %>"
+        /><br />
+        Confirm Password: <input 
+        type= "password" 
+        name="passwordc" 
+        placeholder="Confirm your password" 
+        value="<%= typeof passwordc != 'undefined' ? passwordc : '' %>"
+        /><br />
+        <button type="submit">Register</button>
+    </form>
+    <p>Have An Account? <a href="/users/login">Login</a><br />
+        <a href="/users/reset">Forgot Password?</a>
+    </div>                
+    </p>
+    

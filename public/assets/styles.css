@@ -1,0 +1,85 @@
+body{
+    
+    font-family: tahoma;
+    margin: 0;
+     background-color: rgb(155, 196, 175); 
+
+    
+}
+
+
+
+.welcome-text {
+    position: relative;
+    margin: 2em auto 2em 25%;
+}
+.container{
+    text-align: center;
+    padding: .8em 1.2em;
+}
+
+.welcome-links{
+    position: relative;
+
+
+   
+    /* width: 80%; */
+}
+
+.welcome-links a {
+    text-decoration: none;
+    width: calc(100% - 1em);
+    display: block;
+    border-radius: 20px;
+    background-color: #00CC80;
+    padding: .5em;
+    color: rgb(5, 5, 5) ;
+    margin: 3% auto 7% ;
+    position: relative;
+
+}
+
+.login-form form{
+   
+    margin: 40px ;
+    padding: .1em;
+    display: block;
+    position: relative;
+}
+
+.login-form {
+    /* text-align: justify ; */
+    /* display: block; */
+    border-radius: 20px;
+   /* margin-right: 10em; */
+   margin: 5em 0px 0em;
+   /* background-color: white; */
+   padding-bottom: 10px;
+   padding-left: 10px;
+   /* padding-right: initial; */
+   /* background-color: rgb(235, 235, 235); */
+ /* width: calc(100% - 1em);  */
+    width: 250px;
+
+}
+
+.login-form .login-links a {
+    text-align: center;
+     text-decoration: none; 
+     width: calc(100% - 60em); 
+
+    display: block;
+    border-radius: 20px;
+    background-color: #ab9fc7;
+   
+    color: rgb(5, 5, 5) ;
+}
+
+.login-form .login-links {
+    padding-right: 30px;
+    border-color: lawngreen;
+}
+.login-form .login-input {
+    border-radius: 10px;
+    border-color: rgb(160, 165, 162);
+}
