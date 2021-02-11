@@ -10,7 +10,7 @@
 <body>
     <DIV style="padding: 10px;">
         <h1 style="float:left;padding-right: 10px;">Matcha </h1>
-        <FORM style="float:left;padding-top: 20px"><img src="/<%=curr_user['profile_pic']%>" style="border-radius: 50%;width:50px;height:50px;padding: 10px;"></FORM><BR />
+        <FORM style="float:left;padding-top: 20px"><img src="/<%=curr_user[0]['profile_pic']%>" style="border-radius: 50%;width:50px;height:50px;padding: 10px;"></FORM><BR />
         <FORM style="float:left;padding-top: 15px" action="/loggedin/home"><BUTTON type= "submit">Browse</BUTTON></FORM>
         <FORM style="float:left;padding-top: 15px" action="/loggedin/myprofile"><BUTTON type= "submit">My Profile</BUTTON></FORM>
         <FORM style="float:left;padding-top: 15px" action="/loggedin/visits"><BUTTON type= "submit"> Visits</BUTTON></FORM>

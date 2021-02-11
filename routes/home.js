@@ -48,8 +48,7 @@ router.post('/save', urlencodedParsor, (req, res, next) => {
     const search_params = current_url.searchParams;
     var id = search_params.get('id');
     var message = search_params.get('message');
-    //var name = session.userid;
-    console.log('idddd'+id);
+
     func.enqp("SELECT * FROM connections WHERE id ="+id).then( (resul, err) =>{
         if (err) throw err;
         if (resul[0]['u1'] == session.uid)
@@ -164,11 +163,9 @@ router.get('/chats', urlencodedParsor, (req, res) => {
 
                             } 
                         }
-
-                            console.log(v);
-                            res.writeHead(200)
-                            res.write(v);
-                            res.end();
+                        res.writeHead(200)
+                        res.write(v);
+                        res.end();
                     })
         }
     })
@@ -516,7 +513,6 @@ router.get('/research', urlencodedParsor, (req, res) => {
     }
     age = age.split('-');
     location = location.split(" ")
-    console.log(location);
     var l = location[0];
     if (gender == "all") {
         func.enqp("SELECT * FROM userinfor WHERE  age >= '"+age[0]+"' AND age <= '"+age[1]+"' AND score >='"+popularity+"' AND NOT id  = '"+session.uid+"'").then((r)=>{
@@ -605,7 +601,6 @@ router.get('/visits', (req, res) => {
     func.enqp("SELECT * FROM userinfor WHERE id = '"+session.uid+"'").then((user, err) => {
     if (err) throw err;
     func.SelectQ("SELECT senderid FROM notifications WHERE userid= '"+session.uid+"'AND (reason= '"+"visited"+"' OR reason= '"+"liked"+"' OR reason= '"+"unliked"+"') ORDER BY id DESC").then((vis)=>{
-        console.log(vis);
         var str;
         vis.forEach((resul)=>{
             var id = Object.values(resul);
@@ -614,14 +609,16 @@ router.get('/visits', (req, res) => {
             else
                 str = str+" OR id= '"+id+"'";  
         }) 
-        if (vis[0] != undefined)
-        func.enqp("SELECT * FROM userinfor WHERE "+str+"").then((userr, err) => {
-            if (err) throw err;
-            res.render('visits', {user:user, vis, userr}); 
-        })
+        if (vis[0] != undefined){
+            func.enqp("SELECT * FROM userinfor WHERE "+str+"").then((userr, err) => {
+                if (err) throw err;
+                res.render('visits', {user:user, vis, userr}); 
+            })
+        }
         else{
-            var t = [];
-            res.render('visits', {t,t, t});
+            var vis = [];
+            var userr = [];
+            res.render('visits', {user:user, vis, userr});
         }
     })
     });
@@ -633,14 +630,6 @@ router.post('/geolocation', urlencodedParsor, (req, res, next) => {
     ip.address();
     ip.isEqual('::1', '::0:1');
     ip.toBuffer('127.0.0.1');
-    /*ip.toString(new Buffer.from([127, 0, 0, 1]));
-    ip.fromPrefixLen(24);
-    ip.mask('192.168.1.134', '255.255.255.0');
-    ip.cidr('192.168.1.134/26');
-    ip.not('255.255.255.0');
-    ip.or('192.168.1.134', '0.0.0.255');
-    ip.isPrivate('127.0.0.1');
-    ip.isV6Format('::ffff:127.0.0.1');*/
 
     const current_url = new URL(req.protocol + '://' + req.get('host') + req.originalUrl);
     const search_params = current_url.searchParams;
@@ -654,19 +643,13 @@ router.post('/geolocation', urlencodedParsor, (req, res, next) => {
     else{
         const clientIp = requestIp.getClientIp(req);
         next();
-        console.log(clientIp);
-        //const geo = geoIp.lookup(clientIp);
         const geo = geoIp.lookup('192.168.220.1');
-        console.log('geo '+geo);
-        console.log(req.body);
     
         if (geo != null){
             var lat = geo.ll[0];
             var lon = geo.ll[1];
-            console.log('lattt '+geo.ll[0]);
             var district = geo.city;
             func.enq("UPDATE userinfor SET latitude = '"+lat+"', longitude ='"+lon+"' WHERE username='"+session.userid+"'");
-            //console.log('CLIENTIP '+clientIp+' GEO '+geo.ll+'  '+lon);
         }
     }
 });
@@ -733,7 +716,6 @@ router.get('/viewprofile', (req, res, next) => {
                 pointA = new GeoPoint(user['latitude'], user['longitude']);
                 pointB = new GeoPoint(visited['latitude'], visited['longitude']);
                 var dist = (pointA.distanceTo(pointB, true) | 0 ) + 'km';
-                console.log('zzzzz  '+dist);
                 var age = getAge(user['date_of_birth']);
                 func.SelectQ("SELECT * FROM pics WHERE userid = '" + id +"' ORDER BY id DESC").then((pics, err) => {
                     func.enqp("SELECT * FROM tags WHERE userid = '" + id +"' ORDER BY id DESC").then((tags, err) => {
@@ -745,32 +727,9 @@ router.get('/viewprofile', (req, res, next) => {
                             res.render('viewprofile', {user, visited, status:status, pics: undefined, age:age, tags: tags});  
                     });
                 });
-            
-                //pointFrom = new GeoPoint(-26.2052125, 28.0397575);
-                //pointDes = new GeoPoint(visited['latitude'], visited['longitude']);
-               // var dis = pointFrom.distanceTo(pointDes, true);
-               // console.log(dis);
-               // res.render('viewprofile', {user, visited, status:status});
             }
         });
     });
-   /* func.enqp("SELECT * FROM userinfor").then((userr) => {
-        if (userr){
-            userr.forEach(function(row){
-                if (row["username"] == session.userid)
-                    user = row;
-                if (row["id"] == id)
-                    visited = row;
-            });
-        
-            pointFrom = new GeoPoint(-26.2052125, 28.0397575);
-            //pointDes = new GeoPoint(visited['latitude'], visited['longitude']);
-           // var dis = pointFrom.distanceTo(pointDes, true);
-           // console.log(dis);
-            res.render('viewprofile', {user, visited});
-        }
-    });*/
-    //res.render('viewprofile');
 });
 
 router.get('/makeprofilepic', (req, res) => {
@@ -840,7 +799,6 @@ router.get('/home', (req, res) => {
         r.forEach(function(tag){
 
             pointA = new GeoPoint(user_row['latitude'], user_row['longitude']);
-            console.log(tag['id']+"  gg  "+tag['longitude']);
             pointB = new GeoPoint(tag['latitude'], tag['longitude']);
             var dist = (pointA.distanceTo(pointB, true) | 0 );
            // if(dist > 20 || dist == 20)
@@ -1113,10 +1071,9 @@ router.post('/myprofile', urlencodedParsor, (req, res) => {
 
    else if(req.body.subinterests){//INTERESTSsssssssssssssssssssssssssssssssssssssssss
         req.body.interest.forEach(e => {
-            console.log("ssss "+session.uid+"  "+e);
             func.enqp("SELECT * FROM tags WHERE userid ='"+ session.uid+"'AND tag='" +e+ "' ").then((resul) => {
                 if(resul[0] === undefined)
-                {console.log('s');
+                {
                   func.enq("INSERT INTO tags(userid, tag) VALUES ('"+session.uid+"','" +e+ "') ");
                   res.redirect('myprofile?tags=updated');
                 }

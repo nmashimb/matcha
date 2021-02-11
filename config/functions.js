@@ -48,7 +48,6 @@ module.exports.onlineOffline = function (onOff, username) {
 
 module.exports.sendEmail = function (email, subject, html) {
     con.connect(function(err){
-        if (err) throw err;
         sendmail({
             from: 'resetpassword@matcha.co.za',
             to : email,
@@ -76,15 +75,8 @@ module.exports.EmailExists = function (sql) {
     });});
 }
 
-module.exports.verifyaccount = function (username,token) {
-    // var con = mysql.createConnection({
-    //     host: "localhost",
-    //     user: "root",
-    //     password: "",
-    //     database: "matcha"
-    //   });
-
-    var sql = "UPDATE userinfor SET token = NULL WHERE  username = '" + username + "' AND token = '" + token + "'";
+module.exports.verifyaccount = function (token) {
+    var sql = "UPDATE userinfor SET verified = '"+1+"' WHERE token = '" + token + "'";
     con.query(sql, function (err, result) {
         if (err) throw err;
     });
@@ -105,30 +97,15 @@ module.exports.enqp = function (sql) {
         resolve(result);
     });});
 }
-//no return
 
 module.exports.enq = function (sql) {
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "matcha"
-    });
-
     con.query(sql, function (err, result) {
         if (err) throw err;
     });
 }
-//matching accounts
 
 module.exports.userMatch = function () {
     return new Promise(function(resolve, reject) {
-        // var con = mysql.createConnection({
-        //     host: "localhost",
-        //     user: "root",
-        //     password: "",
-        //     database: "matcha"
-        // });
         con.connect(function(err) {
             if (err) throw err;
             con.query("SELECT * FROM userinfor ",function (err, result) {
@@ -138,19 +115,12 @@ module.exports.userMatch = function () {
         });
     });
 }
-        //check for user exists
 
 module.exports.userExists = function (un,em) {
     return new Promise(function(resolve, reject) {
-        // var con = mysql.createConnection({
-        //     host: "localhost",
-        //     user: "root",
-        //     password: "",
-        //     database: "matcha"
-        // });
         
         con.connect(function(err) { 
-            if (err) throw err;
+            //if (err) throw err;
             con.query("SELECT * FROM userinfor WHERE username = '" + un + "' OR email = '" + em + "'",function (err, result) {
                 if (err) throw err;
                     resolve(result);
@@ -159,23 +129,13 @@ module.exports.userExists = function (un,em) {
     });
 }
 
-        // accout exist
         module.exports.useraccount = function (username) {
             return new Promise(function(resolve, reject) {
-                // var con = mysql.createConnection({
-                //     host: "localhost",
-                //     user: "root",
-                //     password: "",
-                //     database: "matcha"
-                // });
-
-              //  con.connect(function(err) {
-                //    if (err) throw err;
+ 
                     con.query("SELECT * FROM userinfor WHERE username = '" + username + "' OR email = '" + username + "' ",function (err, result) {
                         if (err) throw err;
                             resolve(result);
                     });
-               // });
             });
         }
     

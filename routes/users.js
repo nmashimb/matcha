@@ -13,9 +13,6 @@ var getAge = require('get-age');
 const { getTestMessageUrl } = require('nodemailer');
 const { profile } = require('console');
 
-/*things left: sending email, redirect sys when user exists(synchro), validate username, name, lastname and password*/ 
-
-//router.use(cookieParser());
 
 router.get('/admin', (req, res, next) => {
     var session = req.session;
@@ -24,9 +21,6 @@ router.get('/admin', (req, res, next) => {
     }
     res.end('You have to log out first!');
 });
-
-
-
 
 router.get('/viewchat', (req, res, next) => {
     var session = req.session;
@@ -45,7 +39,6 @@ router.get('/reset', (req, res, next) => {
 });
 
 router.post('/reset', urlencodedParsor, (req, res) => {
-    console.log('sss '+ req.body.email);
     var email = req.body.email;
     func.EmailExists("SELECT * FROM userinfor WHERE email = '" + email + "'").then((resul) => {
         if (!(resul[0] == undefined)){
@@ -66,10 +59,7 @@ router.get('/resetform', (req, res) => {
     const current_url = new URL(req.protocol + '://' + req.get('host') + req.originalUrl);
     const search_params = current_url.searchParams;
     var token = search_params.get('token');
-  //  if (session){   
-        res.render('newpassword', {token : token});
-  //  }
-    res.end('You have to log out first!');
+    res.render('newpassword', {token : token});
 });
 
 router.post('/resetform', urlencodedParsor, (req, res) => {
@@ -131,7 +121,8 @@ router.get('/logout', (req, res) =>{
 });
 
 router.get('/verify',(req, res) =>{
-    func.verifyaccount(req.query.userormail,req.query.token);
+    //func.verifyaccount(req.query.userormail,req.query.token);
+    func.verifyaccount(req.query.token);
     res.redirect('/users/login?verification=successful');  
 });
 
@@ -171,8 +162,6 @@ router.post('/register', urlencodedParsor, (req, res) => {
                 var pp = "profile_pic-blankprofile.png";
                 var userInfo = {username: username, firstname: firstname, lastname: lastname, email: email, password: password, token: token, verified: v, pp:pp,dob:dob, age: getAge(dob)};
                 func.userInfo(userInfo);
-                
-               // func.enq("UPDATE userinfor SET profile_pic = '"+pp+"' WHERE  username = '" +username+ "'");
                 res.redirect('/users/login?login=successful&verificationmail=sent');        
             }
         });
@@ -199,7 +188,6 @@ router.post('/login', urlencodedParsor, (req, res) => {
     let time = hours+':'+min+':'+sec+' '+date+'-'+month+'-'+year;
 
     if ("matcha_admin" === req.body.userormail ) {
-        console.log(req.body.password);
         if (req.body.password === "admin_matcha") {
             session.userid ="matcha_admin";
             session.uid = 0;
@@ -208,7 +196,7 @@ router.post('/login', urlencodedParsor, (req, res) => {
 
     } else {
         func.useraccount(req.body.userormail).then((user) => {
-            if(user[0]['username'] === undefined) {
+            if(user[0] === undefined) {
                 res.redirect('/users/login?login=incorrectusername');
                 return;
             }
@@ -236,7 +224,6 @@ router.post('/login', urlencodedParsor, (req, res) => {
                                 else
                                 res.redirect('/loggedin/home'); 
                             });
-                            //res.redirect('/loggedin/home');   
                         }
                     }
                     else
