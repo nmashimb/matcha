@@ -15,12 +15,6 @@ app.use(expressLayouts);
 //set template engine EJS
 app.set('view engine', 'ejs');
 
-//Express session middleware
-/*app.use(session({
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: false
-}));*/
 app.use(session({
     key: 'user_id',
     secret: 'secret',
@@ -63,51 +57,7 @@ var testAPIRouter = require('./routes/testAPI');
 
   app.use(cors());
   app.use("/testAPI", testAPIRouter);
-  /*
-app.get('/fun', (req, res) => {
-    res.render('testt');//res.sendFile(__dirname+'/test.html');
-});*/
-//  console.log(io.on('connection', (socket) => { console.log('user connected')}));
-  
-
-/*io.on('connection', (socket) => {
-      socket.emit('chat-message', 'Hello World')
-    console.log('a user connected');
-  });*/
-
-
-
-
 
 //listen to port
 app.listen(5000);
 console.log('you are listening to port 5000');
-
-
-
-
-
-
-
-/*var http  = require('http').createServer(app);
-var io      = require('socket.io').listen(http);
-
-http.listen(3001, function(){
-    console.log('http listening on port 3001');
-});
-
-io.on('connection', function(socket){
-    console.log(' A user connected');
-    setTimeout(function(){
-        socket.send("sent message")
-    }, 4000); 
-    socket.on('disconnect', function(){
-        console.log('a user is disconnected');
-    })
-});
-
-
-app.get('/chatting', (req, res) =>{
-    //res.render('chat');
-    res.send('<h1>RqqR</h1><script>"/socket.io/socket.io.js"</script><script>console.log("ss");var socket = io(); </script>');
-});*/

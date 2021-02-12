@@ -38,9 +38,6 @@
         // Get the output text
         var text = document.getElementById("text");
 
-
-        
-    //    If the checkbox is checked, display the output text
         if (checkBox.checked == true){
             var xhttp;
             xhttp = new XMLHttpRequest()
@@ -108,54 +105,6 @@
             <form action="/loggedin/myprofile" method="POST">
                 <label style="font-weight: bold">Interests:</label><br />
                 <p></p>
-                <!-- #Sports  <input type="checkbox" id="Sports" onclick="myFunction(<%= user["id"] %>,'Sports')"/>
-
-                
-                #Fitness <input type="checkbox" id="fitness" onclick="myFunction(<%= user["id"] %>,'fitness')" />
-                #Books <input type="checkbox" id="books" onclick="myFunction(<%= user["id"] %>,'books')" /> 
-                #Music <input type="checkbox" id="music" onclick="myFunction(<%= user["id"] %>,'music')" /> 
-                #Nedflix <input type="checkbox" id="nedflix" onclick="myFunction(<%= user["id"] %>,'nedflix')" />
-                #Fashion <input type="checkbox" id="fashion" onclick="myFunction(<%= user["id"] %>,'fashion')" />
-                <br />
-                #Family <input type="checkbox" id="family" onclick="myFunction(<%= user["id"] %>,'family')" />
-                #Work <input type="checkbox" id="work" onclick="myFunction(<%= user["id"] %>,'work')" />
-                #Politics <input type="checkbox" id="politics" onclick="myFunction(<%= user["id"] %>,'politics')" />
-                #Spirituality <input type="checkbox" id="spirituality" onclick="myFunction(<%= user["id"] %>,'spirituality')" />
-                #Religion <input type="checkbox" id="religion" onclick="myFunction(<%= user["id"] %>,'religion')" />
-                #Travel <input type="checkbox" id="travel" onclick="myFunction(<%= user["id"] %>,'travel')" />
-                <br />
-                #Adventure <input type="checkbox" id="adventure" onclick="myFunction(<%= user["id"] %>,'adventure')" />
-                #Concerts <input type="checkbox" id="concerts" onclick="myFunction(<%= user["id"] %>,'concerts')" />
-                #Photography <input type="checkbox" id="photography" onclick="myFunction(<%= user["id"] %>,'photography')" />
-                #Programming <input type="checkbox" id="programming" onclick="myFunction(<%= user["id"] %>,'programming')" />
-                #Animals <input type="checkbox" id="animals" onclick="myFunction(<%= user["id"] %>,'animals')" />
-                #Sleep <input type="checkbox" id="sleep" onclick="myFunction(<%= user["id"] %>,'sleep')" />
-                <br />
-                #Cooking <input type="checkbox" id="cooking" onclick="myFunction(<%= user["id"] %>,'cooking')" />
-                #Food <input type="checkbox" id="food" onclick="myFunction(<%= user["id"] %>,'food')" />
-                #Socialise <input type="checkbox" id="socialise" onclick="myFunction(<%= user["id"] %>,'socialise')" />
-                #Drinks <input type="checkbox" id="drinks" onclick="myFunction(<%= user["id"] %>,'drinks')" "/>
-                #Smoking <input type="checkbox" id="smoking" onclick="myFunction(<%= user["id"] %>,'smoking')" />
-                #Dance <input type="checkbox" id="dance" onclick="myFunction(<%= user["id"] %>,'dance')" />
-                <br />
-                #Tattoos <input type="checkbox" id="tattoos" onclick="myFunction(<%= user["id"] %>,'tattoos')" />
-                #Pets <input type="checkbox" id="pets" onclick="myFunction(<%= user["id"] %>,'pets')" />
-                #Laughs <input type="checkbox" id="laughs" onclick="myFunction(<%= user["id"] %>,'laughs')" />
-                #Nerd <input type="checkbox" id="nerd" onclick="myFunction(<%= user["id"] %>,'nerd')" />
-                #Walks <input type="checkbox" id="walks" onclick="myFunction(<%= user["id"] %>,'walks')" />
-                #Gaming <input type="checkbox" id="gaming" onclick="myFunction(<%= user["id"] %>,'gaming')" /> -->
-<!-- 
-               <% function myFunction() {%>
-                <%     var checkbox = document.getElementById("myCheck");%>
-                <%    var text = document.getElementById("text");%>
-                <%    if (checkbox.checked == true) %>
-                    <%        text.style.display = "block";%>
-    
-                    <%  }%> -->
-
-
-
-                
 
 <p id="text" style= "display : none">tsk!</p>
 
